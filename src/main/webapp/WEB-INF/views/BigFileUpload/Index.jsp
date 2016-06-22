@@ -10,7 +10,6 @@
     <script src="/assets/webuploader.nolog.js"></script>
     <link href="/assets/bootstrap.min.css" rel="stylesheet" />
     <script src="/assets/bootstrap.min.js"></script>
-    <%--<script src="/app/BigFileUpload/Index/BigFileUpload.js"/>--%>
     <script type="text/javascript">
         $(function () {
             $list = $('#fileList');
@@ -104,38 +103,9 @@
                                     } else {
                                         console.log("服务器上没有同样的文件，秒传失败！");
                                     }
-
-
-
-
-
-
-                                    //$('#uploadBtn').attr("disabled", false);
-                                    //me.options.formData.fileMd5 = fileMd5;
-                                    //me.options.formData.isShared = $("#isShared").val();
-                                    //me.options.formData.fileType = $("#fileType").val();
-                                    //if (result.result) {//文件存在
-                                    //    insertLog("<br>" + moment().format("YYYY-MM-DD HH:mm:ss") + " before-send-file  preupload:文件 " + file.name + " 已经存在，跳过上传   fileMd5:" + fileMd5);
-                                    //    $MD5Percent.hide();
-                                    //    var $li = $('#' + file.id),
-                                    //    $percent = $li.find('.progress  .progress-bar-success');
-                                    //    $li.find('span.state').text('文件重复，已跳过');
-                                    //    $percent.css('width', 100 + '%');
-                                    //    owner.skipFile(file);
-                                    //} else {//文件不存在
-                                    //    file.wholeMd5 = fileMd5;
-                                    //    file.chunkMd5s = result.chunkMd5s;  //如果后台已经有该文件的分片记录
-                                    //}
-
-                                    //// me.data.chunksMd5 = "chunksMd5";
-                                    //$('#' + file.id + ' .cancleBtn').removeClass("btn-info");
-                                    //$('#' + file.id + ' .cancleBtn').attr("disabled", true);
-                                    //deferred.resolve(true);
-                                    //// return deferred.reject();
                                 }
                             });
                         });
-
             });
 
             // 文件上传过程中创建进度条实时显示。
@@ -155,23 +125,6 @@
 
                 $percent.css('width', percentage * 100 + '%');
             });
-            ////给每个文件一个唯一的guid值
-            //uploader.on('uploadBeforeSend', function (block, data) {
-            //    // block为分块数据。
-
-            //    // file为分块对应的file对象。
-            //    //var file = block.file;
-
-
-            //    // 修改data可以控制发送哪些携带数据。
-            //    //data.uid = 123;
-
-            //    // 将存在file对象中的md5数据携带发送过去。
-            //    // data.fileMd5 = file.md5;
-
-            //    // 删除其他数据
-            //    // delete data.key;
-            //});
 
             uploader.on('uploadSuccess', function (file) {
                 $('#' + file.id).find('p.state').text('已上传');
@@ -240,19 +193,6 @@
                     console.log(uploader.getFiles("interrupt"));
                     uploader.upload(uploader.getFiles("interrupt"));
                 }
-
-
-
-
-
-                //console.log("__________________当前所有的文件_______________________");
-                //console.log(uploader.getFiles());
-                //console.log("__________________暂停上传_______________________");
-                //uploader.stop(true);
-                //console.log("__________________所有当前暂停的文件_______________________");
-                //console.log(uploader.getFiles("interrupt"));
-
-                //uploader.upload(uploader.getFiles("interrupt"));
             });
 
 
