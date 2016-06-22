@@ -11,7 +11,7 @@
                             http://www.springframework.org/schema/tx/spring-tx.xsd
                             http://www.springframework.org/schema/aop
                             http://www.springframework.org/schema/aop/spring-aop.xsd ">
-    <context:component-scan base-package="com.zhangzhihao.SpringMVCSeedProject">
+    <context:component-scan base-package="com.zhangzhihao.FileUpload.Java">
         <!--spring配置不扫描以下包-->
         <context:exclude-filter type="annotation"
                                 expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
@@ -50,7 +50,7 @@
         <!--通过扫描下面这个包的方式注册到Hibernate-->
         <property name="packagesToScan">
             <list>
-                <value>com.zhangzhihao.SpringMVCSeedProject.Model</value>
+                <value>com.zhangzhihao.FileUpload.Java.Model</value>
             </list>
         </property>
     </bean>
