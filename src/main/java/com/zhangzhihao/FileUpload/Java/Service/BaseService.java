@@ -1,8 +1,8 @@
 package com.zhangzhihao.FileUpload.Java.Service;
 
 
-import com.zhangzhihao.SpringMVCSeedProject.Dao.BaseDao;
-import com.zhangzhihao.SpringMVCSeedProject.Utils.PageResults;
+import com.zhangzhihao.FileUpload.Java.Dao.BaseDao;
+import com.zhangzhihao.FileUpload.Java.Utils.PageResults;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;

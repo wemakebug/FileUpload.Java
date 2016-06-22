@@ -1,11 +1,14 @@
 package com.zhangzhihao.FileUpload.Java.Dao;
 
 
-import com.zhangzhihao.SpringMVCSeedProject.Utils.PageResults;
+import com.zhangzhihao.FileUpload.Java.Utils.PageResults;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
-import org.hibernate.criterion.*;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.orm.hibernate5.HibernateTemplate;
