@@ -1,0 +1,55 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <!-- 通常，一个session-factory节点代表一个数据库 -->
+    <session-factory>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
+        <!--<property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>-->
+
+        <!-- 2.1 显示hibernate在运行时候执行的sql语句 -->
+        <property name="hibernate.show_sql">true</property>
+        <!-- 2.2 格式化sql -->
+        <property name="hibernate.format_sql">true</property>
+        <!-- 2.3 自动建表  -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+
+        <!-- 设置 Hibernate 的事务隔离级别 -->
+        <property name="connection.isolation">2</property>
+
+        <!-- 删除对象后, 使其 OID 置为 null -->
+        <property name="use_identifier_rollback">true</property>
+
+        <!--配置 C3P0 数据源 生产环境打开-->
+        <!--<property name="hibernate.c3p0.max_size">10</property>
+        <property name="hibernate.c3p0.min_size">5</property>
+        <property name="c3p0.acquire_increment">2</property>
+
+        &lt;!&ndash;多长时间检测一次池内的所有链接对象是否超时&ndash;&gt;
+        <property name="c3p0.idle_test_period">2000</property>
+        <property name="c3p0.timeout">2000</property>
+
+        &lt;!&ndash;缓存 Statement 对象的数量&ndash;&gt;
+        <property name="c3p0.max_statements">10</property>
+
+        &lt;!&ndash; 设定 JDBC 的 Statement 读取数据的时候每次从数据库中取出的记录条数 MySql不支持&ndash;&gt;
+        <property name="hibernate.jdbc.fetch_size">100</property>
+
+        &lt;!&ndash; 设定对数据库进行批量删除，批量更新和批量插入的时候的批次大小 MySql不支持&ndash;&gt;
+        <property name="jdbc.batch_size">30</property>-->
+
+
+        <!--配置启用 hibernate 的二级缓存-->
+        <property name="cache.use_second_level_cache">true</property>
+
+        <!--配置hibernate二级缓存使用的产品-->
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory
+        </property>
+
+        <!--在 hibernate 配置文件中声明开启查询缓存-->
+        <property name="cache.use_query_cache">true</property>
+
+        <!--mapping映射在HibernateUtil里面-->
+    </session-factory>
+</hibernate-configuration>

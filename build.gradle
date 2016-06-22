@@ -1,0 +1,81 @@
+group 'zhangzhihao'
+version '1.0-SNAPSHOT'
+
+apply plugin: "java"
+apply plugin: "war"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+def springVersion = "4.3.0.RELEASE"
+def HibernateVersion = "5.2.0.Final"
+
+repositories {
+    maven { url "http://maven.oschina.net/content/groups/public/" }
+    mavenLocal()
+    mavenCentral()
+    maven { url "http://repo.spring.io/release" }
+    maven { url "https://repo.spring.io/libs-snapshot" }
+}
+
+dependencies {
+    compile(
+            // spring framework
+            "org.springframework:spring-context:${springVersion}",
+            "org.springframework:spring-web:${springVersion}",
+            "org.springframework:spring-webmvc:${springVersion}",
+            "org.springframework:spring-test:${springVersion}",
+            "org.springframework:spring-beans:${springVersion}",
+            "org.springframework:spring-expression:${springVersion}",
+            "org.springframework:spring-aop:${springVersion}",
+            "org.springframework:spring-aspects:${springVersion}",
+            "org.springframework:spring-core:${springVersion}",
+            "org.springframework:spring-instrument:${springVersion}",
+            "org.springframework:spring-orm:${springVersion}",
+
+            // MySQL
+            "mysql:mysql-connector-java:6.0.2",
+
+            //servlet
+            "javax.servlet:javax.servlet-api:3.1.0",
+
+            //apache
+            "commons-fileupload:commons-fileupload:1.3.1",
+
+            // JSON
+            // "com.alibaba:fastjson:1.2.6",
+            "com.fasterxml.jackson.core:jackson-core:2.7.4",
+            "com.fasterxml.jackson.core:jackson-databind:2.7.4",
+            "com.fasterxml.jackson.core:jackson-annotations:2.7.4",
+
+
+            //Hibernate 5.2.0.Final有一个bug
+            "org.hibernate:hibernate-core:${HibernateVersion}",
+
+            //C3P0
+            "c3p0:c3p0:0.9.1.2",
+            "org.hibernate:hibernate-c3p0:${HibernateVersion}",
+
+            //ehcache
+            "net.sf.ehcache:ehcache-core:2.6.11",
+            "org.hibernate:hibernate-ehcache:${HibernateVersion}",
+
+            //jUnit
+            "junit:junit:4.12",
+
+
+    )
+    testCompile(
+            //jUnit
+            "junit:junit:4.12",
+    )
+}
+
+task copyJars(type: Copy) {
+    from configurations.runtime
+    into "lib" //复制到lib目录
+}
+
+//让gradle支持中文
+tasks.withType(JavaCompile) {
+    options.encoding = "UTF-8"
+}

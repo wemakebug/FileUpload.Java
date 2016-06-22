@@ -1,0 +1,6 @@
+/out
+/build/
+.idea
+.gradle
+/classes/
+.clover
