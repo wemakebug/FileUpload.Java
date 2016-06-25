@@ -50,6 +50,10 @@ dependencies {
 
             //Hibernate 5.2.0.Final有一个bug
             "org.hibernate:hibernate-core:${HibernateVersion}",
+            "org.hibernate:hibernate-validator:5.2.4.Final",
+
+            //JPA
+            "org.hibernate:hibernate-entitymanager:5.1.0.Final",
 
             //C3P0
             "c3p0:c3p0:0.9.1.2",
@@ -61,7 +65,8 @@ dependencies {
 
             //jUnit
             "junit:junit:4.12",
-
+            //@NotNull
+            "org.jetbrains:annotations:15.0",
 
     )
     testCompile(
