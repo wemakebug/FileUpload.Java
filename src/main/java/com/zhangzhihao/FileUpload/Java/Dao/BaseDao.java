@@ -5,6 +5,7 @@ import com.zhangzhihao.FileUpload.Java.Utils.PageResults;
 import org.hibernate.Criteria;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projection;
@@ -32,9 +33,12 @@ import java.util.List;
 @Primary
 public class BaseDao<T> {
 
-	@Autowired
 	private HibernateTemplate hibernateTemplate;
 
+	@Autowired
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.hibernateTemplate = new HibernateTemplate(sessionFactory);
+	}
 
 	/**
 	 * 保存对象
@@ -147,6 +151,7 @@ public class BaseDao<T> {
 	 */
 	@Transactional(readOnly = true)
 	public T getById(Class<T> modelClass, @NotNull final Serializable id) {
+		T t = hibernateTemplate.get(modelClass, id);
 		return hibernateTemplate.get(modelClass, id);
 	}
 
