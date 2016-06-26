@@ -28,7 +28,7 @@ import java.util.List;
  * @param <T> 实体类型
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
-@Transactional(timeout = 1)
+@Transactional
 @Repository
 @Primary
 public class BaseDao<T> {
