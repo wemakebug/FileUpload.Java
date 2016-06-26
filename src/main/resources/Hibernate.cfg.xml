@@ -4,9 +4,25 @@
 <hibernate-configuration>
     <!-- 通常，一个session-factory节点代表一个数据库 -->
     <session-factory>
+
+        <!-- 1. 数据库连接配置  已移至Spring.xml-->
+        <!--<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.url">
+            jdbc:mysql://10.16.155.241:8081/SpringMVCSeedProject?serverTimezone=UTC
+        </property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">root</property>-->
+        <!--
+            数据库方法配置， hibernate在运行的时候，会根据不同的方言生成符合当前数据库语法的sql
+         -->
         <property name="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</property>
         <!--<property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>-->
 
+        <!-- session -->
+        <!--假如使用HibernateTemplate，下面这行应该注释掉-->
+        <!--<property name="hibernate.current_session_context_class">thread</property>-->
+
+        <!-- 2. 其他相关配置 -->
         <!-- 2.1 显示hibernate在运行时候执行的sql语句 -->
         <property name="hibernate.show_sql">true</property>
         <!-- 2.2 格式化sql -->
@@ -44,7 +60,7 @@
         <property name="cache.use_second_level_cache">true</property>
 
         <!--配置hibernate二级缓存使用的产品-->
-        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory
+        <property name="hibernate.cache.region.factory_class">org.hibernate.cache.SingletonEhCacheRegionFactory
         </property>
 
         <!--在 hibernate 配置文件中声明开启查询缓存-->

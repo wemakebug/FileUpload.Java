@@ -5,7 +5,7 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
-    <context:component-scan base-package="com.zhangzhihao.FileUpload.Java">
+    <context:component-scan base-package="com.zhangzhihao.FileUpload.Java.Controller">
         <!--springMVC配置 只扫描以下包-->
         <context:include-filter type="annotation"
                                 expression="org.springframework.stereotype.Controller"/>
@@ -32,7 +32,4 @@
         <property name="defaultEncoding" value="UTF-8"/>
         <!--<property name="还有很多其他配置"-->
     </bean>
-
-    <!--直接访问“/” 时会跳转的目录-->
-    <!--<mvc:view-controller path="/" view-name=""/>-->
 </beans>

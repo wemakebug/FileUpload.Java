@@ -53,7 +53,7 @@ dependencies {
             "org.hibernate:hibernate-validator:5.2.4.Final",
 
             //JPA
-            "org.hibernate:hibernate-entitymanager:5.1.0.Final",
+            //"org.hibernate:hibernate-entitymanager:5.1.0.Final",
 
             //C3P0
             "c3p0:c3p0:0.9.1.2",
