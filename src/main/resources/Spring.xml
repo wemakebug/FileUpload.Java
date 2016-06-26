@@ -28,6 +28,7 @@
         <property name="jdbcUrl" value="${jdbc.connectionURL}"/>
         <property name="initialPoolSize" value="${jdbc.initPoolSize}"/>
         <property name="maxPoolSize" value="${jdbc.maxPoolSize}"/>
+        <property name="autoCommitOnClose" value="true"/>
     </bean>
     <!-- 配置 Hibernate 的 SessionFactory 实例: 通过 Spring 提供的 LocalSessionFactoryBean 进行配置 -->
     <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
@@ -55,6 +56,7 @@
         </property>
     </bean>
 
+    <tx:annotation-driven/>
     <!--   配置 Spring 的声明式事务
        1. 配置事务管理器 -->
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
@@ -65,7 +67,7 @@
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
             <tx:method name="get*" read-only="true"/>
-            <tx:method name="**" propagation="REQUIRED"/>
+            <tx:method name="*"/>
         </tx:attributes>
     </tx:advice>
 
