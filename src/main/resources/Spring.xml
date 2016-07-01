@@ -2,15 +2,13 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                             http://www.springframework.org/schema/beans/spring-beans.xsd
                             http://www.springframework.org/schema/context
                             http://www.springframework.org/schema/context/spring-context.xsd
                             http://www.springframework.org/schema/tx
-                            http://www.springframework.org/schema/tx/spring-tx.xsd
-                            http://www.springframework.org/schema/aop
-                            http://www.springframework.org/schema/aop/spring-aop.xsd ">
+                            http://www.springframework.org/schema/tx/spring-tx.xsd">
     <context:component-scan base-package="com.zhangzhihao.FileUpload.Java">
         <!--spring配置不扫描以下包-->
         <context:exclude-filter type="annotation"
@@ -30,55 +28,56 @@
         <property name="maxPoolSize" value="${jdbc.maxPoolSize}"/>
         <property name="autoCommitOnClose" value="true"/>
     </bean>
-    <!-- 配置 Hibernate 的 SessionFactory 实例: 通过 Spring 提供的 LocalSessionFactoryBean 进行配置 -->
-    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-        <!-- 配置数据源属性 -->
+
+
+    <!-- jpa Entity Factory 配置 -->
+    <bean id="entityManagerFactory"
+          class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
         <property name="dataSource" ref="dataSource"/>
-        <!-- 配置 hibernate 配置文件的位置及名称 -->
-        <property name="configLocation" value="classpath:Hibernate.cfg.xml"/>
-        <!-- 使用 hibernateProperties 属相来配置 Hibernate 原生的属性 ,Hibernate.cfg.xml已经配置一遍了，只配置一遍！-->
-        <!--<property name="hibernateProperties">
+        <property name="packagesToScan" value="com.zhangzhihao.FileUpload.Java.Model"/>
+        <property name="jpaVendorAdapter">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
+        </property>
+        <!-- 配置 JPA 的基本属性. 例如 JPA 实现产品的属性 -->
+        <property name="jpaProperties">
             <props>
-                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5InnoDBDialect</prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <!--生产环境关闭show sql，format sql-->
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="cache.use_second_level_cache">true</prop>
+                <prop key="hibernate.cache.region.factory_class">org.hibernate.cache.SingletonEhCacheRegionFactory
+                </prop>
+                <prop key="cache.use_query_cache">true</prop>
+                <prop key="connection.isolation">2</prop>
+                <prop key="use_identifier_rollback">true</prop>
+                <prop key="hibernate.c3p0.max_size">20</prop>
+                <prop key="hibernate.c3p0.min_size">1</prop>
+                <prop key="c3p0.acquire_increment">2</prop>
+                <!--多长时间检测一次池内的所有链接对象是否超时-->
+                <prop key="c3p0.idle_test_period">2000</prop>
+                <prop key="c3p0.timeout">2000</prop>
+                <!--缓存 Statement 对象的数量-->
+                <prop key="c3p0.max_statements">10</prop>
+                <!-- 设定 JDBC 的 Statement 读取数据的时候每次从数据库中取出的记录条数 MySql不支持-->
+                <prop key="hibernate.jdbc.fetch_size">100</prop>
+                <!-- 设定对数据库进行批量删除，批量更新和批量插入的时候的批次大小 MySql不支持-->
+                <prop key="jdbc.batch_size">30</prop>
             </props>
-        </property>-->
-        <!-- 配置 hibernate 映射文件的位置及名称, 可以使用通配符 -->
-        <!--<property name="mappingLocations"
-                  value="classpath:com/zhangzhihao/spring/hibernate/entities/*.hbm.xml"></property>-->
-        <!--通过扫描下面这个包的方式注册到Hibernate-->
-        <property name="packagesToScan">
-            <list>
-                <value>com.zhangzhihao.FileUpload.Java.Model</value>
-            </list>
+        </property>
+        <property name="jpaDialect">
+            <bean class="org.springframework.orm.jpa.vendor.HibernateJpaDialect"/>
         </property>
     </bean>
 
-    <tx:annotation-driven/>
-    <!--   配置 Spring 的声明式事务
-       1. 配置事务管理器 -->
-    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <!-- 配置 JPA 使用的事务管理器 -->
+    <bean id="transactionManager"
+          class="org.springframework.orm.jpa.JpaTransactionManager">
+        <property name="entityManagerFactory" ref="entityManagerFactory"/>
     </bean>
 
-    <!-- 2. 配置事务属性, 需要事务管理器 -->
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="get*" read-only="true"/>
-            <tx:method name="*"/>
-        </tx:attributes>
-    </tx:advice>
+    <!-- 配置支持基于注解式事务配置 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
 
-    <!-- 3. 配置事务切点, 并把切点和事务属性关联起来 -->
-    <aop:config>
-        <aop:pointcut expression="execution(* com.zhangzhihao.FileUpload.Java.Dao.*.*(..))"
-                      id="txPointcut"/>
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
-    </aop:config>
-
-    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
-        <property name="sessionFactory" ref="sessionFactory"/>
-    </bean>
 </beans>

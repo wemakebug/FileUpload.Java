@@ -20,36 +20,40 @@ import static com.zhangzhihao.FileUpload.Java.Utils.SaveFile.saveFile;
 @Controller
 @RequestMapping("/FileUpload")
 public class FileUploadController {
-    @Autowired
-    private FileService fileService;
+	@Autowired
+	private FileService fileService;
 
-    @RequestMapping(value = "/Index", method = RequestMethod.GET)
-    public String Index() {
-        return "FileUpload/Index";
-    }
+	@RequestMapping(value = "/Index", method = RequestMethod.GET)
+	public String Index() {
+		return "FileUpload/Index";
+	}
 
-    @ResponseBody
-    @RequestMapping(value = "/FileUp", method = RequestMethod.POST)
-    public String fileUpload(@RequestParam("id") String id,
-                             @RequestParam("name") String name,
-                             @RequestParam("type") String type,
-                             @RequestParam("lastModifiedDate") String lastModifiedDate,
-                             @RequestParam("size") int size,
-                             @RequestParam("file") MultipartFile file) {
-        String fileName = "";
+	@ResponseBody
+	@RequestMapping(value = "/FileUp", method = RequestMethod.POST)
+	public String fileUpload(@RequestParam("id") String id,
+	                         @RequestParam("name") String name,
+	                         @RequestParam("type") String type,
+	                         @RequestParam("lastModifiedDate") String lastModifiedDate,
+	                         @RequestParam("size") int size,
+	                         @RequestParam("file") MultipartFile file) {
+		String fileName = "";
 
-        try {
-            String path = FileUploadController.class.getResource("/").getFile();
-            int build = path.indexOf("build");
-            String realpath = path.substring(0, build);
-            String ext = name.substring(name.lastIndexOf("."));
-            fileName = UUID.randomUUID().toString() + ext;
-            saveFile(realpath, fileName, file);
-        } catch (Exception ex) {
-            return "{\"error\":true}";
-        }
-        fileService.save(new File(fileName, createMd5(file).toString(), new Date()));
+		try {
+			String path = FileUploadController.class.getResource("/").getFile();
+			int build = path.indexOf("build");
+			String realpath = path.substring(0, build);
+			String ext = name.substring(name.lastIndexOf("."));
+			fileName = UUID.randomUUID().toString() + ext;
+			saveFile(realpath, fileName, file);
+		} catch (Exception ex) {
+			return "{\"error\":true}";
+		}
+		try {
+			fileService.save(new File(fileName, createMd5(file).toString(), new Date()));
+		} catch (Exception e) {
+			return "{\"error\":true}";
+		}
 
-        return "{jsonrpc = \"2.0\",id = id,filePath = \"/Upload/\" + fileFullName}";
-    }
+		return "{jsonrpc = \"2.0\",id = id,filePath = \"/Upload/\" + fileFullName}";
+	}
 }
