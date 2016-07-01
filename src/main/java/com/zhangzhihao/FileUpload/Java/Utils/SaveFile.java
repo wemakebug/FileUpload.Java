@@ -1,5 +1,6 @@
 package com.zhangzhihao.FileUpload.Java.Utils;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
@@ -9,13 +10,15 @@ import java.io.InputStream;
 
 
 public class SaveFile {
-	public static boolean saveFile(String localPath, String fileFullName, MultipartFile file) throws Exception {
+	public static boolean saveFile(@NotNull final String savePath,
+	                               @NotNull final String fileFullName,
+	                               @NotNull final MultipartFile file) throws Exception {
 		byte[] data = readInputStream(file.getInputStream());
 		//new一个文件对象用来保存图片，默认保存当前工程根目录
-		File uploadFile = new File(localPath + "/src/main/webapp/upload/" + fileFullName);
+		File uploadFile = new File(savePath + fileFullName);
 
 		//判断文件夹是否存在，不存在就差创建一个
-		File fileDirectory = new File(localPath + "/src/main/webapp/upload/");
+		File fileDirectory = new File(savePath);
 		if (!fileDirectory.exists()) {
 			//noinspection ResultOfMethodCallIgnored
 			fileDirectory.mkdir();
