@@ -40,11 +40,11 @@ public class FileUploadController {
 
 		try {
 			String path = FileUploadController.class.getResource("/").getFile();
-			int build = path.indexOf("build");
-			String realpath = path.substring(0, build);
+			int index = path.indexOf("build");
+			String realPath = path.substring(0, index) + "/src/main/webapp/upload/";
 			String ext = name.substring(name.lastIndexOf("."));
 			fileName = UUID.randomUUID().toString() + ext;
-			saveFile(realpath, fileName, file);
+			saveFile(realPath, fileName, file);
 		} catch (Exception ex) {
 			return "{\"error\":true}";
 		}
