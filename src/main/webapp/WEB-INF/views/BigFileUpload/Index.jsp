@@ -81,7 +81,7 @@
                             $.ajax({//向服务端发送请求
                                 cache: false,
                                 type: "post",
-                                dataType: "json",
+                                //dataType: "json",
                                 url: "/BigFileUpload/IsMD5Exist",//baseUrl +
                                 data: {
                                     fileMd5: fileMd5,
