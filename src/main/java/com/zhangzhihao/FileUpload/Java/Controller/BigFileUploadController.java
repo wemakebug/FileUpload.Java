@@ -1,25 +1,106 @@
 package com.zhangzhihao.FileUpload.Java.Controller;
 
 import com.zhangzhihao.FileUpload.Java.Service.FileService;
+import com.zhangzhihao.FileUpload.Java.Utils.SaveFile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import static com.zhangzhihao.FileUpload.Java.Utils.IsAllUploaded.Uploaded;
 
 @Controller
 @RequestMapping("/BigFileUpload")
-public class BigFileUploadController {
-	@Autowired
-	private FileService fileService;
+public class BigFileUploadController extends SaveFile {
+    @Autowired
+    private FileService fileService;
 
-	/**
-	 * 转向操作页面
-	 *
-	 * @return 操作页面
-	 */
-	@RequestMapping(value = "/Index", method = RequestMethod.GET)
-	public String Index() {
-		return "BigFileUpload/Index";
-	}
+    /**
+     * 转向操作页面
+     *
+     * @return 操作页面
+     */
+    @RequestMapping(value = "/Index", method = RequestMethod.GET)
+    public String Index() {
+        return "BigFileUpload/Index";
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/IsMD5Exist", method = RequestMethod.POST)
+    public String bigFileUpload(String fileMd5, String fileName, String fileID) {
+
+        try {
+            boolean md5Exist = fileService.isMd5Exist(fileMd5);
+            if (md5Exist) {
+                return "this file is exist";
+            } else {
+                return "this file is not exist";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "this file is not exist";
+        }
+    }
+
+    /**
+     * @param guid             // 临时文件名
+     * @param md5value
+     * @param chunks           //分块数
+     * @param chunk            //分块序号
+     * @param id
+     * @param name             //上传文件名
+     * @param type
+     * @param lastModifiedDate
+     * @param size
+     * @param file
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/BigFileUp")
+    public String fileUpload(String guid, String md5value, String chunks, String chunk, String id, String name, String type, String lastModifiedDate, int size, MultipartFile file) {
+        String fileName = "";
+        try {
+            int xuhao = 0;
+
+            String path = FileUploadController.class.getResource("/").getFile();
+            int index = path.indexOf("build");
+            String tempPath = "/src/main/webapp/upload/";
+            String realPath = path.substring(0, index) + tempPath;
+
+
+            String newTempPath = tempPath + guid + "/";        //创建临时文件夹保存分块文件
+            String newRealPath = path.substring(0, index) + newTempPath;    //分块文件临时保存路径
+            String ext = name.substring(name.lastIndexOf("."));
+
+
+            if (chunks != null && chunk != null) {                    //判断文件是否分块
+                int chunksNumber = Integer.parseInt(chunks);
+                xuhao = Integer.parseInt(chunk);
+                fileName = String.valueOf(xuhao).toString() + ext;
+                saveFile(newRealPath, fileName, file);                  // 将文件分块保存到临时文件夹里，便于之后的合并文件
+
+                Uploaded(md5value, guid, chunk, chunks, path, fileName, ext, fileService);         // 验证所有分块是否上传成功，成功的话进行合并
+
+            } else {
+
+                fileName =guid + ext;
+                saveFile(realPath, fileName, file);                       //上传文件没有分块的话就直接保存
+            }
+
+
+        } catch (Exception ex) {
+            return "{\"error\":true}";
+        }
+        try {
+
+        } catch (Exception e) {
+            return "{\"error\":true}";
+        }
+
+        return "{jsonrpc = \"2.0\",id = id,filePath = \"/Upload/\" + fileFullName}";
+    }
+
 
 }
