@@ -35,7 +35,11 @@ public class MergeFile {
         File dir= new File(newRealPath);
         File[] files=dir.listFiles();
         for (int i = 0; i <files.length ; i++) {
-            files[i].delete();
+            try {
+                files[i].delete();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         dir.delete();
 
