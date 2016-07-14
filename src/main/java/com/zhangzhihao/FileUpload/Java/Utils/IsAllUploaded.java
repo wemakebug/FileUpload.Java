@@ -15,6 +15,11 @@ public class IsAllUploaded {
 
     private static List<UploadInfo> uploadInfoList;
 
+    /**
+     * @param md5
+     * @param chunks
+     * @return
+     */
     public static boolean isAllUploaded(String md5, String chunks) {
         int size = uploadInfoList.stream()
                 .filter(item -> item.getMd5().equals(md5))
@@ -30,35 +35,24 @@ public class IsAllUploaded {
 
     /**
      * @param md5
-     * @param chunk
-     * @param chunks
-     * @param path
+     * @param guid        随机生成的文件名
+     * @param chunk       //文件分块序号
+     * @param chunks      //文件分块数
      * @param fileName
-     * @param ext
+     * @param ext         //文件后缀名
+     * @param fileService
      */
-    public static void Uploaded(String md5, String guid, String chunk, String chunks, String path, String fileName, String ext, FileService fileService) {
+    public static void Uploaded(String md5, String guid, String chunk, String chunks, String uploadFolderPath, String fileName, String ext, FileService fileService) throws Exception {
         if (uploadInfoList == null) {
             uploadInfoList = new ArrayList<>();
         }
-        uploadInfoList.add(new UploadInfo(md5, chunks, chunk, path, fileName, ext));
+        uploadInfoList.add(new UploadInfo(md5, chunks, chunk, uploadFolderPath, fileName, ext));
         boolean allUploaded = isAllUploaded(md5, chunks);
         int chunksNumber = Integer.parseInt(chunks);
 
-        int index = path.indexOf("build");
-        String tempPath = "/src/main/webapp/upload/";
-        String realPath = path.substring(0, index) + tempPath;
-
-        String newTempPath = tempPath + guid + "/";        //创建临时文件夹保存分块文件
-        String newRealPath = path.substring(0, index) + newTempPath;    //分块文件临时保存路径
-
-
         if (allUploaded) {
-            try {
-                mergeFile(chunksNumber, ext, md5, guid, newRealPath, realPath);
-                fileService.save(new com.zhangzhihao.FileUpload.Java.Model.File(guid + ext, md5, new Date()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            mergeFile(chunksNumber, ext, guid, uploadFolderPath);
+            fileService.save(new com.zhangzhihao.FileUpload.Java.Model.File(guid + ext, md5, new Date()));
         }
     }
 }
