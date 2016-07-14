@@ -2,46 +2,34 @@ package com.zhangzhihao.FileUpload.Java.Utils;
 
 import java.io.*;
 
+import static com.zhangzhihao.FileUpload.Java.Utils.DeleteFolder.deleteFolder;
+import static com.zhangzhihao.FileUpload.Java.Utils.StreamUtil.saveStreamToFile;
+
 
 public class MergeFile {
 
-    public static void mergeFile(int chunksNumber, String ext, String md5,String guid, String newRealPath, String realPath) throws Exception {
+    /**
+     * @param chunksNumber
+     * @param ext
+     * @param guid
+     * @param uploadFolderPath
+     * @throws Exception
+     */
+    public static void mergeFile(int chunksNumber, String ext, String guid, String uploadFolderPath) throws Exception {
         /*合并输入流*/
+        String mergePath = uploadFolderPath + guid + "/";
         SequenceInputStream s = null;
-        InputStream s1 = new FileInputStream(newRealPath + 0 + ext);
-        InputStream s2 = new FileInputStream(newRealPath + 1 + ext);
+        InputStream s1 = new FileInputStream(mergePath + 0 + ext);
+        InputStream s2 = new FileInputStream(mergePath + 1 + ext);
         s = new SequenceInputStream(s1, s2);
         for (int i = 2; i < chunksNumber; i++) {
-            InputStream s3 = new FileInputStream(newRealPath + i + ext);
+            InputStream s3 = new FileInputStream(mergePath + i + ext);
             s = new SequenceInputStream(s, s3);
         }
 
-        /*创建输出流，写入数据，合并分块*/
-        OutputStream outstream = new FileOutputStream(realPath + guid + ext);
-        byte[] buffer = new byte[1024];
-        int len = 0;
-        try {
-            while ((len = s.read(buffer)) != -1) {
-                outstream.write(buffer, 0, len);
-                outstream.flush();
-            }
-        } catch (IOException e) {
-            throw e;
-        } finally {
-            outstream.close();
-            s.close();
-        }
-        /*删除临时文件夹*/
-        File dir= new File(newRealPath);
-        File[] files=dir.listFiles();
-        for (int i = 0; i <files.length ; i++) {
-            try {
-                files[i].delete();
-            }catch (Exception e){
-                e.printStackTrace();
-            }
-        }
-        dir.delete();
+        saveStreamToFile(s, uploadFolderPath + guid + ext);             //通过输出流向文件写入数据
+
+        deleteFolder(mergePath);        //删除保存分块文件的文件夹
 
     }
 }

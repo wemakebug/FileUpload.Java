@@ -46,7 +46,7 @@ public class BigFileUploadController extends SaveFile {
 
     /**
      * @param guid             // 临时文件名
-     * @param md5value
+     * @param md5value         //客户端生成md5值
      * @param chunks           //分块数
      * @param chunk            //分块序号
      * @param id
@@ -63,32 +63,30 @@ public class BigFileUploadController extends SaveFile {
         String fileName = "";
         try {
             int xuhao = 0;
-
             String path = FileUploadController.class.getResource("/").getFile();
             int index = path.indexOf("build");
             String tempPath = "/src/main/webapp/upload/";
-            String realPath = path.substring(0, index) + tempPath;
+            String uploadFolderPath = path.substring(0, index) + tempPath;
 
-
-            String newTempPath = tempPath + guid + "/";        //创建临时文件夹保存分块文件
-            String newRealPath = path.substring(0, index) + newTempPath;    //分块文件临时保存路径
+            //创建临时文件夹保存分块文件
+            String newTempPath = tempPath + guid + "/";
+            //分块文件临时保存路径
+            String mergePath = path.substring(0, index) + newTempPath;
             String ext = name.substring(name.lastIndexOf("."));
 
-
-            if (chunks != null && chunk != null) {                    //判断文件是否分块
-                int chunksNumber = Integer.parseInt(chunks);
+            //判断文件是否分块
+            if (chunks != null && chunk != null) {
                 xuhao = Integer.parseInt(chunk);
                 fileName = String.valueOf(xuhao).toString() + ext;
-                saveFile(newRealPath, fileName, file);                  // 将文件分块保存到临时文件夹里，便于之后的合并文件
-
-                Uploaded(md5value, guid, chunk, chunks, path, fileName, ext, fileService);         // 验证所有分块是否上传成功，成功的话进行合并
-
+                // 将文件分块保存到临时文件夹里，便于之后的合并文件
+                saveFile(mergePath, fileName, file);
+                // 验证所有分块是否上传成功，成功的话进行合并
+                Uploaded(md5value, guid, chunk, chunks, uploadFolderPath, fileName, ext, fileService);
             } else {
-
-                fileName =guid + ext;
-                saveFile(realPath, fileName, file);                       //上传文件没有分块的话就直接保存
+                fileName = guid + ext;
+                //上传文件没有分块的话就直接保存
+                saveFile(uploadFolderPath, fileName, file);
             }
-
 
         } catch (Exception ex) {
             return "{\"error\":true}";

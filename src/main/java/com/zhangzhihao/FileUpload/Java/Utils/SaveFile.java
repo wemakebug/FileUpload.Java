@@ -10,6 +10,14 @@ import java.io.InputStream;
 
 
 public class SaveFile {
+	/**
+	 *
+	 * @param savePath
+	 * @param fileFullName
+	 * @param file
+	 * @return
+     * @throws Exception
+     */
 	public static boolean saveFile(@NotNull final String savePath,
 	                               @NotNull final String fileFullName,
 	                               @NotNull final MultipartFile file) throws Exception {
