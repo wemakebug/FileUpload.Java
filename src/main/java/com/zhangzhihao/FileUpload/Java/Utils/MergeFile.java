@@ -1,5 +1,7 @@
 package com.zhangzhihao.FileUpload.Java.Utils;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.*;
 
 import static com.zhangzhihao.FileUpload.Java.Utils.DeleteFolder.deleteFolder;
@@ -15,7 +17,11 @@ public class MergeFile {
      * @param uploadFolderPath
      * @throws Exception
      */
-    public static void mergeFile(int chunksNumber, String ext, String guid, String uploadFolderPath) throws Exception {
+    public static void mergeFile(final int chunksNumber,
+                                 @NotNull final String ext,
+                                 @NotNull final String guid,
+                                 @NotNull final String uploadFolderPath)
+            throws Exception {
         /*合并输入流*/
         String mergePath = uploadFolderPath + guid + "/";
         SequenceInputStream s = null;
@@ -27,9 +33,11 @@ public class MergeFile {
             s = new SequenceInputStream(s, s3);
         }
 
-        saveStreamToFile(s, uploadFolderPath + guid + ext);             //通过输出流向文件写入数据
+        //通过输出流向文件写入数据
+        saveStreamToFile(s, uploadFolderPath + guid + ext);
 
-        deleteFolder(mergePath);        //删除保存分块文件的文件夹
+        //删除保存分块文件的文件夹
+        deleteFolder(mergePath);
 
     }
 }

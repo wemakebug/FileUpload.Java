@@ -13,19 +13,19 @@ public class StreamUtil {
                                            @NotNull final String filePath) throws IOException {
         boolean flag = false;
          /*创建输出流，写入数据，合并分块*/
-        OutputStream outstream = new FileOutputStream(filePath);
+        OutputStream outputStream = new FileOutputStream(filePath);
         byte[] buffer = new byte[1024];
         int len = 0;
         try {
             while ((len = inputStream.read(buffer)) != -1) {
-                outstream.write(buffer, 0, len);
-                outstream.flush();
+                outputStream.write(buffer, 0, len);
+                outputStream.flush();
             }
         } catch (IOException e) {
             flag = false;
             throw e;
         } finally {
-            outstream.close();
+            outputStream.close();
             inputStream.close();
             flag = true;
         }
