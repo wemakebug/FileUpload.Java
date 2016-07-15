@@ -3,6 +3,7 @@ package com.zhangzhihao.FileUpload.Java.Utils;
 
 import com.zhangzhihao.FileUpload.Java.Model.UploadInfo;
 import com.zhangzhihao.FileUpload.Java.Service.FileService;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,7 +21,8 @@ public class IsAllUploaded {
      * @param chunks
      * @return
      */
-    public static boolean isAllUploaded(String md5, String chunks) {
+    public static boolean isAllUploaded(@NotNull final String md5,
+                                        @NotNull final String chunks) {
         int size = uploadInfoList.stream()
                 .filter(item -> item.getMd5().equals(md5))
                 .distinct()
@@ -34,15 +36,23 @@ public class IsAllUploaded {
     }
 
     /**
-     * @param md5
+     * @param md5         MD5
      * @param guid        随机生成的文件名
-     * @param chunk       //文件分块序号
-     * @param chunks      //文件分块数
-     * @param fileName
-     * @param ext         //文件后缀名
-     * @param fileService
+     * @param chunk       文件分块序号
+     * @param chunks      文件分块数
+     * @param fileName    文件名
+     * @param ext         文件后缀名
+     * @param fileService fileService
      */
-    public static void Uploaded(String md5, String guid, String chunk, String chunks, String uploadFolderPath, String fileName, String ext, FileService fileService) throws Exception {
+    public static void Uploaded(@NotNull final String md5,
+                                @NotNull final String guid,
+                                @NotNull final String chunk,
+                                @NotNull final String chunks,
+                                @NotNull final String uploadFolderPath,
+                                @NotNull final String fileName,
+                                @NotNull final String ext,
+                                @NotNull final FileService fileService)
+            throws Exception {
         if (uploadInfoList == null) {
             uploadInfoList = new ArrayList<>();
         }

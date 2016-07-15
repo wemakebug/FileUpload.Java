@@ -20,7 +20,8 @@ public class SaveFile {
      */
 	public static boolean saveFile(@NotNull final String savePath,
 	                               @NotNull final String fileFullName,
-	                               @NotNull final MultipartFile file) throws Exception {
+	                               @NotNull final MultipartFile file)
+			throws Exception {
 		byte[] data = readInputStream(file.getInputStream());
 		//new一个文件对象用来保存图片，默认保存当前工程根目录
 		File uploadFile = new File(savePath + fileFullName);

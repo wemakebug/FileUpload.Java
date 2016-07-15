@@ -45,16 +45,16 @@ public class BigFileUploadController extends SaveFile {
     }
 
     /**
-     * @param guid             // 临时文件名
-     * @param md5value         //客户端生成md5值
-     * @param chunks           //分块数
-     * @param chunk            //分块序号
-     * @param id
-     * @param name             //上传文件名
-     * @param type
-     * @param lastModifiedDate
-     * @param size
-     * @param file
+     * @param guid             临时文件名
+     * @param md5value         客户端生成md5值
+     * @param chunks           分块数
+     * @param chunk            分块序号
+     * @param id               文件id便于区分
+     * @param name             上传文件名
+     * @param type             文件类型
+     * @param lastModifiedDate 上次修改时间
+     * @param size             文件大小
+     * @param file             文件本身
      * @return
      */
     @ResponseBody
@@ -77,7 +77,7 @@ public class BigFileUploadController extends SaveFile {
             //判断文件是否分块
             if (chunks != null && chunk != null) {
                 xuhao = Integer.parseInt(chunk);
-                fileName = String.valueOf(xuhao).toString() + ext;
+                fileName = String.valueOf(xuhao) + ext;
                 // 将文件分块保存到临时文件夹里，便于之后的合并文件
                 saveFile(mergePath, fileName, file);
                 // 验证所有分块是否上传成功，成功的话进行合并
@@ -89,11 +89,6 @@ public class BigFileUploadController extends SaveFile {
             }
 
         } catch (Exception ex) {
-            return "{\"error\":true}";
-        }
-        try {
-
-        } catch (Exception e) {
             return "{\"error\":true}";
         }
 
