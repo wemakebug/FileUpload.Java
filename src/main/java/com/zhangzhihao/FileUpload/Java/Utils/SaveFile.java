@@ -28,8 +28,9 @@ public class SaveFile {
 		//判断文件夹是否存在，不存在就创建一个
 		File fileDirectory = new File(savePath);
 		if (!fileDirectory.exists()) {
-			//noinspection ResultOfMethodCallIgnored
-			fileDirectory.mkdir();
+			if (!fileDirectory.mkdir()) {
+                throw new Exception("文件夹创建失败！路径为：" + savePath);
+            }
 		}
 
 		//创建输出流
