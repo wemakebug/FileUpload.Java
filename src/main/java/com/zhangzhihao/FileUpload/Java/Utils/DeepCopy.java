@@ -14,7 +14,8 @@ public class DeepCopy {
      *
      * @return 深拷贝得到的新实例
      */
-    public static Object deepClone(@NotNull final Object object) throws Exception {
+    public static Object deepClone(@NotNull final Object object)
+            throws Exception {
         // 序列化
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         ObjectOutputStream oos = new ObjectOutputStream(bos);

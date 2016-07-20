@@ -3,14 +3,13 @@ package com.zhangzhihao.FileUpload.Java.Utils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 
 public class CreateMd5 {
-    public static StringBuilder createMd5(@NotNull final MultipartFile file) throws NoSuchAlgorithmException, IOException {
+    public static StringBuilder createMd5(@NotNull final MultipartFile file)
+            throws Exception {
         StringBuilder sb = new StringBuilder();
         //生成MD5实例
         MessageDigest md5 = MessageDigest.getInstance("MD5");

@@ -25,7 +25,6 @@ public class SaveFile {
 		byte[] data = readInputStream(file.getInputStream());
 		//new一个文件对象用来保存图片，默认保存当前工程根目录
 		File uploadFile = new File(savePath + fileFullName);
-
 		//判断文件夹是否存在，不存在就创建一个
 		File fileDirectory = new File(savePath);
 		if (!fileDirectory.exists()) {
