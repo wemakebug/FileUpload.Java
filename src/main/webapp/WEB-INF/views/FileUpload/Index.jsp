@@ -7,7 +7,7 @@
     <!--支持IE9+ chrome fireFox-->
     <script src="/assets/jquery-2.1.4.min.js"></script>
     <link href="/assets/webuploader.css" rel="stylesheet" />
-    <script src="/assets/webuploader.nolog.js"></script>
+    <script src="/assets/webuploader.nolog.min.js"></script>
     <link href="/assets/bootstrap.min.css" rel="stylesheet" />
     <script src="/assets/bootstrap.min.js"></script>
 
