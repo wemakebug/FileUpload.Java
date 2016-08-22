@@ -6,8 +6,8 @@ apply plugin: "war"
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-def springVersion = "4.3.0.RELEASE"
-def HibernateVersion = "5.2.0.Final"
+def springVersion = "4.3.2.RELEASE"
+def HibernateVersion = "5.2.2.Final"
 
 repositories {
     mavenLocal()
