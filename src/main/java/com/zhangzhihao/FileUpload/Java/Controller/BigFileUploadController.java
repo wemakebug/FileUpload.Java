@@ -59,10 +59,19 @@ public class BigFileUploadController extends SaveFile {
      */
     @ResponseBody
     @RequestMapping(value = "/BigFileUp")
-    public String fileUpload(String guid, String md5value, String chunks, String chunk, String id, String name, String type, String lastModifiedDate, int size, MultipartFile file) {
-        String fileName = "";
+    public String fileUpload(String guid,
+                             String md5value,
+                             String chunks,
+                             String chunk,
+                             String id,
+                             String name,
+                             String type,
+                             String lastModifiedDate,
+                             int size,
+                             MultipartFile file) {
+        String fileName;
         try {
-            int xuhao = 0;
+            int xuhao;
             String path = FileUploadController.class.getResource("/").getFile();
             int index = path.indexOf("build");
             String tempPath = "/src/main/webapp/upload/";
