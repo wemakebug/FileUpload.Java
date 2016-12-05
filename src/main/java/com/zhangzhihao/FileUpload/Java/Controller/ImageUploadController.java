@@ -16,6 +16,7 @@ import java.util.UUID;
 import static com.zhangzhihao.FileUpload.Java.Utils.CreateMd5.createMd5;
 import static com.zhangzhihao.FileUpload.Java.Utils.DeepCopy.deepClone;
 import static com.zhangzhihao.FileUpload.Java.Utils.IsImag.isImage;
+import static com.zhangzhihao.FileUpload.Java.Utils.SaveFile.getRealPath;
 import static com.zhangzhihao.FileUpload.Java.Utils.SaveFile.saveFile;
 
 
@@ -49,9 +50,7 @@ public class ImageUploadController {
             if (!isImage(tempFile))
                 return "{\"error\":true}";
 
-            String path = ImageUploadController.class.getResource("/").getFile();
-            int build = path.indexOf("build");
-            String realpath = path.substring(0, build) + "src/main/webapp/upload/";
+            String realpath = getRealPath();
             String ext = name.substring(name.lastIndexOf("."));
             fileName = UUID.randomUUID().toString() + ext;
             saveFile(realpath, fileName, saveFile);

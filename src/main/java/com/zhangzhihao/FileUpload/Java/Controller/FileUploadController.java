@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import static com.zhangzhihao.FileUpload.Java.Utils.CreateMd5.createMd5;
+import static com.zhangzhihao.FileUpload.Java.Utils.SaveFile.getRealPath;
 import static com.zhangzhihao.FileUpload.Java.Utils.SaveFile.saveFile;
 
 
@@ -39,9 +40,7 @@ public class FileUploadController {
 		String fileName = "";
 
 		try {
-			String path = FileUploadController.class.getResource("/").getFile();
-			int index = path.indexOf("build");
-			String realPath = path.substring(0, index) + "/src/main/webapp/upload/";
+			String realPath = getRealPath();
 			String ext = name.substring(name.lastIndexOf("."));
 			fileName = UUID.randomUUID().toString() + ext;
 			saveFile(realPath, fileName, file);
