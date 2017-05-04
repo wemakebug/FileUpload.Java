@@ -24,7 +24,7 @@ public class MergeFile {
             throws Exception {
         /*合并输入流*/
         String mergePath = uploadFolderPath + guid + "/";
-        SequenceInputStream s = null;
+        SequenceInputStream s ;
         InputStream s1 = new FileInputStream(mergePath + 0 + ext);
         InputStream s2 = new FileInputStream(mergePath + 1 + ext);
         s = new SequenceInputStream(s1, s2);

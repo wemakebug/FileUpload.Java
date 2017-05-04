@@ -37,13 +37,12 @@ public class FileUploadController {
 	                         @RequestParam("lastModifiedDate") String lastModifiedDate,
 	                         @RequestParam("size") int size,
 	                         @RequestParam("file") MultipartFile file) {
-		String fileName = "";
+		String fileName;
 
 		try {
-			String realPath = getRealPath();
 			String ext = name.substring(name.lastIndexOf("."));
 			fileName = UUID.randomUUID().toString() + ext;
-			saveFile(realPath, fileName, file);
+			saveFile(getRealPath(), fileName, file);
 		} catch (Exception ex) {
 			return "{\"error\":true}";
 		}

@@ -14,6 +14,7 @@ import java.util.zip.ZipOutputStream;
 
 
 public class SaveFile {
+    private static final File uploadDirectory = new File(getRealPath());
     /**
      * @param savePath
      * @param fileFullName
@@ -30,9 +31,16 @@ public class SaveFile {
         File uploadFile = new File(savePath + fileFullName);
         //判断文件夹是否存在，不存在就创建一个
         File fileDirectory = new File(savePath);
-        if (!fileDirectory.exists()) {
-            if (!fileDirectory.mkdir()) {
-                throw new Exception("文件夹创建失败！路径为：" + savePath);
+        synchronized (uploadDirectory){
+            if(!uploadDirectory.exists()){
+                if(!uploadDirectory.mkdir()){
+                    throw new Exception("保存文件的父文件夹创建失败！路径为：" + savePath);
+                }
+            }
+            if (!fileDirectory.exists()) {
+                if (!fileDirectory.mkdir()) {
+                    throw new Exception("文件夹创建失败！路径为：" + savePath);
+                }
             }
         }
 
@@ -53,7 +61,7 @@ public class SaveFile {
         //创建一个Buffer字符串
         byte[] buffer = new byte[1024];
         //每次读取的字符串长度，如果为-1，代表全部读取完毕
-        int len = 0;
+        int len;
         //使用一个输入流从buffer里把数据读取出来
         while ((len = inStream.read(buffer)) != -1) {
             //用输出流往buffer里写入数据，中间参数代表从哪个位置开始读，len代表读取的长度

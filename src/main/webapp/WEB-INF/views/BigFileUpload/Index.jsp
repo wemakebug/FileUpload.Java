@@ -38,7 +38,7 @@
                 //formData: { guid: WebUploader.guid() },  //一个文件有一个guid，在服务器端合并成一个文件  这里有个问题，多个文件或者上传一个文件成功后不刷新直接添加文件上传生成的guid不变！！！   暂时只能传一个大文件（已解决）
                 //fileNumLimit :1,
                 fileSizeLimit: 2000 * 1024 * 1024,//最大2GB
-                fileSingleSizeLImit: 2000 * 1024 * 1024,
+                fileSingleSizeLimit: 2000 * 1024 * 1024,
 
 
                 resize: false//不压缩
@@ -51,15 +51,12 @@
                 //}
             });
 
-
-
-
             // 当有文件被添加进队列的时候
             uploader.on('fileQueued', function (file) {
                 $list.append('<div id="' + file.id + '" class="item">' +
                         '<h4 class="info">' + file.name + '<button type="button" fileId="' + file.id + '" class="btn btn-danger btn-delete"><span class="glyphicon glyphicon-trash"></span></button></h4>' +
-                        '<p class="state">等待上传...</p>' +
-                        '</div>');//id="' + file.id + 'btn"
+                        '<p class="state">正在计算文件MD5...请等待计算完毕后再点击上传！</p>' +
+                        '</div>');
                 //删除要上传的文件
                 //每次添加文件都给btn-delete绑定删除方法
                 $(".btn-delete").click(function () {
@@ -78,6 +75,9 @@
                             //insertLog("<br>" + moment().format("YYYY-MM-DD HH:mm:ss") + " before-send-file  preupload:计算文件(" + file.name + ")MD5完成. 耗时  " + (end - start) + '毫秒  fileMd5: ' + fileMd5);
                             file.wholeMd5 = fileMd5;//获取到了md5
                             uploader.options.formData.md5value = file.wholeMd5;//每个文件都附带一个md5，便于实现秒传
+
+                            $('#' + file.id).find('p.state').text('MD5计算完毕，可以点击上传了');
+
                             $.ajax({//向服务端发送请求
                                 cache: false,
                                 type: "post",
@@ -195,23 +195,13 @@
                 }
             });
 
-
-
-
             uploader.on('uploadAccept', function (file, response) {
-                //if (uploader.errorCode) {
-                //    // 通过return false来告诉组件，此文件上传有错。
-                //    return false;
-                //}
-                if (response._raw == '{"error":true}') {
+                if (response._raw === '{"error":true}') {
                     return false;
                 }
 
             });
         });
-
-
-
     </script>
 </head>
 <body>

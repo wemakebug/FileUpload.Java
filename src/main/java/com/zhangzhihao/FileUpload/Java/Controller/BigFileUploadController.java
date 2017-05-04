@@ -71,22 +71,16 @@ public class BigFileUploadController extends SaveFile {
                              MultipartFile file) {
         String fileName;
         try {
-            int xuhao;
-            String path = FileUploadController.class.getResource("/").getFile();
-            int index = path.indexOf("build");
-            String tempPath = "/src/main/webapp/upload/";
-            String uploadFolderPath = path.substring(0, index) + tempPath;
+            int index;
+            String uploadFolderPath = getRealPath();
 
-            //创建临时文件夹保存分块文件
-            String newTempPath = tempPath + guid + "/";
-            //分块文件临时保存路径
-            String mergePath = path.substring(0, index) + newTempPath;
+            String mergePath =uploadFolderPath + guid + "/";
             String ext = name.substring(name.lastIndexOf("."));
 
             //判断文件是否分块
             if (chunks != null && chunk != null) {
-                xuhao = Integer.parseInt(chunk);
-                fileName = String.valueOf(xuhao) + ext;
+                index = Integer.parseInt(chunk);
+                fileName = String.valueOf(index) + ext;
                 // 将文件分块保存到临时文件夹里，便于之后的合并文件
                 saveFile(mergePath, fileName, file);
                 // 验证所有分块是否上传成功，成功的话进行合并
@@ -98,6 +92,7 @@ public class BigFileUploadController extends SaveFile {
             }
 
         } catch (Exception ex) {
+            ex.printStackTrace();
             return "{\"error\":true}";
         }
 

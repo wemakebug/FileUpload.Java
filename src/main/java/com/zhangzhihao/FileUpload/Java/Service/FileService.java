@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 
 @Service
 public class FileService extends BaseService<File> {
@@ -14,13 +15,13 @@ public class FileService extends BaseService<File> {
 
     public boolean isMd5Exist(String md5) {
         Query query = new Query(entityManager);
-        Object resultMD5 = query.from(File.class)
+        @SuppressWarnings("unchecked") List<File> result = query.from(File.class)
                 .select()
                 .whereEqual("MD5", md5)
                 .createTypedQuery()
-                .getSingleResult();
+                .getResultList();
 
-        return resultMD5 != null;
+        return !result.isEmpty();
 
     }
 }
